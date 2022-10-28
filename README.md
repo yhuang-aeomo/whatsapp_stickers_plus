@@ -1,4 +1,4 @@
-# whatsapp_stickers
+# whatsapp_stickers_plus
 
 A Flutter plugin for adding stickers to WhatsApp.
 
@@ -8,7 +8,7 @@ A Flutter plugin for adding stickers to WhatsApp.
 
 ## Usage
 
-To use this plugin, add `whatsapp_stickers` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
+To use this plugin, add `whatsapp_stickers_plus` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
 ### Android
 
@@ -28,9 +28,9 @@ Do not forget to add following entry to ```Info.plist``` with ```Runner``` targe
 
 ```xml
 <key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>whatsapp</string>
-	</array>
+ <array>
+  <string>whatsapp</string>
+ </array>
 ```
 
 ## Examples
@@ -128,7 +128,7 @@ Future installFromRemote() async {
   stickers.forEach((sticker, emojis) {
     downloads.add(
       dio.download(
-        'https://github.com/applicazza/whatsapp_stickers/raw/master/example/assets/$sticker',
+        'https://github.com/applicazza/whatsapp_stickers_plus/raw/master/example/assets/$sticker',
         '${stickersDirectory.path}/$sticker',
       ),
     );

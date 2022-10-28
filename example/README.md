@@ -1,6 +1,6 @@
-# whatsapp_stickers_example
+# whatsapp_stickers_plus_example
 
-Demonstrates how to use the whatsapp_stickers plugin.
+Demonstrates how to use the whatsapp_stickers_plus plugin.
 
 ## Getting Started
 
