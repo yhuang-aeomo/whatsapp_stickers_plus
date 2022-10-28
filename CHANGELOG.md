@@ -1,3 +1,8 @@
+## 1.0.0
+
+* Upgraded dependencies to make sure Android and iOS are up to date.
+* Replaced `YYImage` with `SDWebImageWebPCoder` as `YYImage` no longer maintain to support ARM.
+
 ## 0.1.0-nullsafety.0
 
 * Null safety has been added.

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:whatsapp_stickers/exceptions.dart';
-import 'package:whatsapp_stickers/whatsapp_stickers.dart';
+import 'package:whatsapp_stickers_plus/exceptions.dart';
+import 'package:whatsapp_stickers_plus/whatsapp_stickers.dart';
 
 void main() {
   runApp(AppRoot());
@@ -108,7 +108,7 @@ Future installFromRemote() async {
   stickers.forEach((sticker, emojis) {
     downloads.add(
       dio.download(
-        'https://github.com/applicazza/whatsapp_stickers/raw/master/example/assets/$sticker',
+        'https://github.com/applicazza/whatsapp_stickers_plus/raw/master/example/assets/$sticker',
         '${stickersDirectory.path}/$sticker',
       ),
     );

@@ -1,5 +1,5 @@
-name: whatsapp_stickers_example
-description: Demonstrates how to use the whatsapp_stickers plugin.
+name: whatsapp_stickers_plus_example
+description: Demonstrates how to use the whatsapp_stickers_plus plugin.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -13,9 +13,9 @@ dependencies:
     sdk: flutter
   dio: ^4.0.0
   path_provider: ^2.0.5
-  whatsapp_stickers:
+  whatsapp_stickers_plus:
     # When depending on this package from a real application you should use:
-    #   whatsapp_stickers: ^x.y.z
+    #   whatsapp_stickers_plus: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints
     # The example app is bundled with the plugin so we use a path dependency on
     # the parent directory to use the current plugin's version. 
