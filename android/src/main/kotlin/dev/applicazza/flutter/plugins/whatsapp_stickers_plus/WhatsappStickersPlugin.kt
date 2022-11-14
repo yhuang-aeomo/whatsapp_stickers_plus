@@ -162,6 +162,8 @@ public class WhatsappStickersPlugin: FlutterPlugin, MethodCallHandler, ActivityA
           val validationError = data.getStringExtra("validation_error")
           if (validationError != null) {
             this.result?.error("error", validationError, "")
+          } else {
+            this.result?.error("cancelled", "cancelled", "")
           }
         } else {
           this.result?.error("cancelled", "cancelled", "")

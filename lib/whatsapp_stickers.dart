@@ -41,7 +41,7 @@ class WhatsappStickers {
       payload['stickers'] = _stickers;
       await _channel.invokeMethod('sendToWhatsApp', payload);
     } on PlatformException catch (e) {
-      switch (e.code) {
+      switch (e.code.toUpperCase()) {
         case WhatsappStickersFileNotFoundException.code:
           throw WhatsappStickersFileNotFoundException(e.message);
         case WhatsappStickersNumOutsideAllowableRangeException.code:
@@ -60,6 +60,10 @@ class WhatsappStickers {
           throw WhatsappStickersEmptyStringException(e.message);
         case WhatsappStickersStringTooLongException.code:
           throw WhatsappStickersStringTooLongException(e.message);
+        case WhatsappStickersAlreadyAddedException.code:
+          throw WhatsappStickersAlreadyAddedException(e.message);
+        case WhatsappStickersCancelledException.code:
+          throw WhatsappStickersCancelledException(e.message);
         default:
           throw WhatsappStickersException(e.message);
       }
