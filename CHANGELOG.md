@@ -1,3 +1,8 @@
+## 1.1.0
+
+* Added 2 extra exceptions `WhatsappStickersAlreadyAddedException` and `WhatsappStickersCancelledException`
+* Fixed missing else statement handling on Android when cancel prompt
+
 ## 1.0.0
 
 * Upgraded dependencies to make sure Android and iOS are up to date.
