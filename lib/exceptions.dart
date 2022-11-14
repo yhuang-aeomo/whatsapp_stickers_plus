@@ -61,3 +61,15 @@ class WhatsappStickersStringTooLongException extends WhatsappStickersException {
 
   WhatsappStickersStringTooLongException(String? cause) : super(cause);
 }
+
+class WhatsappStickersAlreadyAddedException extends WhatsappStickersException {
+  static const String code = 'ALREADY_ADDED';
+
+  WhatsappStickersAlreadyAddedException(String? cause) : super(cause);
+}
+
+class WhatsappStickersCancelledException extends WhatsappStickersException {
+  static const String code = 'CANCELLED';
+
+  WhatsappStickersCancelledException(String? cause) : super(cause);
+}
