@@ -1,19 +1,12 @@
 package dev.applicazza.flutter.plugins.whatsapp_stickers_plus;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
-import android.net.Uri;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
+import android.content.Context;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -22,12 +15,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.util.PathUtils;
-
-import static dev.applicazza.flutter.plugins.whatsapp_stickers_plus.StickerPackLoader.getStickerAssetUri;
 
 public class ConfigFileManager {
 
@@ -56,17 +46,35 @@ public class ConfigFileManager {
         String publisherWebsite = call.argument("publisherWebsite");
         String privacyPolicyWebsite = call.argument("privacyPolicyWebsite");
         String licenseAgreementWebsite = call.argument("licenseAgreementWebsite");
-        Map<String, List<String>> stickers = call.argument("stickers");
+        List<Map<String, Object>> stickerList = call.argument("stickers");
+
         StickerPack newStickerPack = new StickerPack(identifier, name, publisher, trayImageFileName, "",
                 publisherWebsite, privacyPolicyWebsite, licenseAgreementWebsite, "1", false);
-        List<Sticker> newStickers = new ArrayList<Sticker>();
-        assert stickers != null;
-        for (Map.Entry<String, List<String>> entry : stickers.entrySet()) {
-            Sticker s = new Sticker(getFileName(entry.getKey()), entry.getValue());
+        List<Sticker> newStickers = new ArrayList<>();
 
-            newStickers.add(s);
+        if (stickerList != null) {
+            for (Map<String, Object> sticker : stickerList) {
+                if (sticker != null) {
+                    String fileName = (String) sticker.get("fileName");
+                    if (fileName == null) {
+                       continue;
+                    }
+                    String stickerFileName = getFileName(fileName);
+                    List<String> emojis = (List<String>) sticker.get("emojis");
+                    if (emojis != null) {
+                        Sticker newSticker = new Sticker(stickerFileName, emojis);
+                        newStickers.add(newSticker);
+                    } else {
+                        System.err.println("Error: stickerFileName or emojis is null.");
+                    }
+                } else {
+                    System.err.println("Error: sticker is null.");
+                }
+            }
         }
+
         newStickerPack.setStickers(newStickers);
+
         newStickerPack.setAndroidPlayStoreLink("");
         newStickerPack.setIosAppStoreLink("");
         return newStickerPack;

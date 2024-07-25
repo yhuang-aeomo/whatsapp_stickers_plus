@@ -1,11 +1,12 @@
+import 'dart:collection';
+
 import 'package:flutter/services.dart';
 import 'exceptions.dart';
 
 class WhatsappStickers {
   static const MethodChannel _channel = MethodChannel('whatsapp_stickers_plus');
 
-  final Map<String, List<String>> _stickers = {};
-
+  final List<Map<String, dynamic>> stickers;
   final String identifier;
   final String name;
   final String publisher;
@@ -19,14 +20,16 @@ class WhatsappStickers {
     required this.name,
     required this.publisher,
     required this.trayImageFileName,
+    required LinkedHashMap<String, List<String>> stickersMap,
     this.publisherWebsite,
     this.privacyPolicyWebsite,
     this.licenseAgreementWebsite,
-  });
-
-  void addSticker(WhatsappStickerImage image, List<String> emojis) {
-    _stickers[image.path] = emojis;
-  }
+  }) : stickers = stickersMap.entries.map((entry) {
+          return {
+            'fileName': entry.key,
+            'emojis': entry.value,
+          };
+        }).toList();
 
   Future<void> sendToWhatsApp() async {
     try {
@@ -38,7 +41,7 @@ class WhatsappStickers {
       payload['publisherWebsite'] = publisherWebsite;
       payload['privacyPolicyWebsite'] = privacyPolicyWebsite;
       payload['licenseAgreementWebsite'] = licenseAgreementWebsite;
-      payload['stickers'] = _stickers;
+      payload['stickers'] = stickers;
       await _channel.invokeMethod('sendToWhatsApp', payload);
     } on PlatformException catch (e) {
       switch (e.code.toUpperCase()) {

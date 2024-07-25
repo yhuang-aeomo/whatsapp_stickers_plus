@@ -1,8 +1,6 @@
-import 'dart:io';
+import 'dart:collection';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:whatsapp_stickers_plus/exceptions.dart';
 import 'package:whatsapp_stickers_plus/whatsapp_stickers.dart';
 
@@ -50,7 +48,7 @@ class AppRoot extends StatelessWidget {
   }
 }
 
-const stickers = {
+final LinkedHashMap<String, List<String>> stickers = LinkedHashMap.from({
   '01_Cuppy_smile.webp': ['☕', '🙂'],
   '02_Cuppy_lol.webp': ['😄', '😀'],
   '03_Cuppy_rofl.webp': ['😆', '😂'],
@@ -73,22 +71,25 @@ const stickers = {
   '20_Cuppy_disgusting.webp': ['🤮', '👎'],
   '21_Cuppy_hi.webp': ['🖐', '🙋'],
   '22_Cuppy_bye.webp': ['🖐', '👋'],
-};
+});
 
 Future installFromAssets() async {
+  LinkedHashMap<String, List<String>> stickersMap = LinkedHashMap();
+  stickers.forEach((sticker, emojis) {
+    final stickerImage = WhatsappStickerImage.fromAsset('assets/$sticker');
+    stickersMap[stickerImage.path] = emojis;
+  });
+
   var stickerPack = WhatsappStickers(
     identifier: 'cuppyFlutterWhatsAppStickers',
     name: 'Cuppy Flutter WhatsApp Stickers',
     publisher: 'John Doe',
     trayImageFileName: WhatsappStickerImage.fromAsset('assets/tray_Cuppy.png'),
+    stickersMap: stickersMap,
     publisherWebsite: '',
     privacyPolicyWebsite: '',
     licenseAgreementWebsite: '',
   );
-
-  stickers.forEach((sticker, emojis) {
-    stickerPack.addSticker(WhatsappStickerImage.fromAsset('assets/$sticker'), emojis);
-  });
 
   try {
     await stickerPack.sendToWhatsApp();
@@ -97,42 +98,4 @@ Future installFromAssets() async {
   }
 }
 
-Future installFromRemote() async {
-  var applicationDocumentsDirectory = await getApplicationDocumentsDirectory();
-  var stickersDirectory = Directory('${applicationDocumentsDirectory.path}/stickers');
-  await stickersDirectory.create(recursive: true);
-
-  final dio = Dio();
-  final downloads = <Future>[];
-
-  stickers.forEach((sticker, emojis) {
-    downloads.add(
-      dio.download(
-        'https://github.com/applicazza/whatsapp_stickers_plus/raw/master/example/assets/$sticker',
-        '${stickersDirectory.path}/$sticker',
-      ),
-    );
-  });
-
-  await Future.wait(downloads);
-
-  var stickerPack = WhatsappStickers(
-    identifier: 'cuppyFlutterWhatsAppStickers',
-    name: 'Cuppy Flutter WhatsApp Stickers',
-    publisher: 'John Doe',
-    trayImageFileName: WhatsappStickerImage.fromAsset('assets/tray_Cuppy.png'),
-    publisherWebsite: '',
-    privacyPolicyWebsite: '',
-    licenseAgreementWebsite: '',
-  );
-
-  stickers.forEach((sticker, emojis) {
-    stickerPack.addSticker(WhatsappStickerImage.fromFile('${stickersDirectory.path}/$sticker'), emojis);
-  });
-
-  try {
-    await stickerPack.sendToWhatsApp();
-  } on WhatsappStickersException catch (e) {
-    print(e.cause);
-  }
-}
+Future installFromRemote() async {}
