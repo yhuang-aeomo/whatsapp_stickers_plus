@@ -42,7 +42,7 @@ public class SwiftWhatsappStickersPlugin: NSObject, FlutterPlugin {
             return
         }
         
-        guard let stickers = arguments["stickers"] as? [String: [String]] else {
+        guard let stickers = arguments["stickers"] as? [[String: Any]] else {
             result(FlutterError(code: "INVALID_STICKERS", message: "Invalid stickers", details: nil))
             return
         }
@@ -89,9 +89,14 @@ public class SwiftWhatsappStickersPlugin: NSObject, FlutterPlugin {
         }
         
         for sticker in stickers {
-            let emojis: [String]? = sticker.value
-            
-            let filename = sticker.key
+            guard let filename = sticker["fileName"] as? String else {
+                result(FlutterError(code: "INVALID_FILENAME", message: "Sticker filename is invalid or missing", details: nil))
+                return
+            }
+            guard let emojis = sticker["emojis"] as? [String] else {
+                result(FlutterError(code: "INVALID_EMOJIS", message: "Sticker emojis are invalid or missing", details: nil))
+                return
+            }
             
             do {
                 try stickerPack!.addSticker(contentsOfFile: locateFile(atPath: filename), emojis: emojis)
