@@ -26,6 +26,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 33
+    namespace 'dev.applicazza.flutter.plugins.whatsapp_stickers_plus'
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
